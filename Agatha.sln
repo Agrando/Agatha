@@ -1,12 +1,19 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22310.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{DEDE481F-3D06-49BB-A086-1776FFA05189}"
 	ProjectSection(SolutionItems) = preProject
 		agatha.snk = agatha.snk
 		CHANGELOG.txt = CHANGELOG.txt
 		CONTRIBUTORS.txt = CONTRIBUTORS.txt
 		LICENSE.txt = LICENSE.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{4C178455-65B6-4F54-B147-97FA965BBD4B}"
+	ProjectSection(SolutionItems) = preProject
+		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agatha.Common", "Agatha.Common\Agatha.Common.csproj", "{53EBF9A4-A518-483A-9842-5E5FBE6495F8}"
@@ -36,11 +43,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agatha.Ninject.Silverlight", "Agatha.Ninject.Silverlight\Agatha.Ninject.Silverlight.csproj", "{CA950AC0-9319-4DD9-9E2D-9CBF032A17E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agatha.Spring", "Agatha.Spring\Agatha.Spring.csproj", "{142F03BA-5E44-4EF1-936F-17C9557BBB17}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{4C178455-65B6-4F54-B147-97FA965BBD4B}"
-	ProjectSection(SolutionItems) = preProject
-		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agatha.Autofac", "Agatha.Autofac\Agatha.Autofac.csproj", "{7C56C995-FCF7-4CBF-9F58-116B370863FF}"
 EndProject
