@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Agatha.Common</RootNamespace>
     <AssemblyName>Agatha.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>agatha.snk</AssemblyOriginatorKeyFile>
@@ -44,6 +44,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,6 +53,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -75,59 +77,17 @@
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AsyncRequestDispatcher.cs" />
-    <Compile Include="AsyncRequestDispatcherFactory.cs" />
-    <Compile Include="AsyncRequestDispatcherFactoryStub.cs" />
-    <Compile Include="AsyncRequestDispatcherStub.cs" />
-    <Compile Include="Caching\CacheConfiguration.cs" />
-    <Compile Include="Caching\CacheManager.cs" />
-    <Compile Include="Caching\ICache.cs" />
-    <Compile Include="Caching\ICacheProvider.cs" />
-    <Compile Include="Caching\InMemoryCache.cs" />
-    <Compile Include="Caching\InMemoryCacheProvider.cs" />
-    <Compile Include="Caching\RequestCacheConfiguration.cs" />
-    <Compile Include="Caching\Timers\ITimer.cs" />
-    <Compile Include="Caching\Timers\ITimerProvider.cs" />
     <Compile Include="Caching\Timers\TimerProvider.cs" />
+    <Compile Include="Configuration\WcfKnownTypesBasedRequestTypeRegistry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Caching\Timers\TimerWrapper.cs" />
     <Compile Include="ClientConfiguration.cs" />
-    <Compile Include="Configuration\IRequestHandlerRegistry.cs" />
-    <Compile Include="Configuration\IRequestTypeRegistry.cs" />
-    <Compile Include="Configuration\WcfKnownTypesBasedRequestTypeRegistry.cs" />
-    <Compile Include="Conventions\BasicConventions.cs" />
-    <Compile Include="Conventions\IConventions.cs" />
-    <Compile Include="Disposable.cs" />
-    <Compile Include="EnableClientResponseCachingAttribute.cs" />
-    <Compile Include="EnableServiceResponseCachingAttribute.cs" />
-    <Compile Include="ExceptionInfo.cs" />
-    <Compile Include="ExceptionType.cs" />
-    <Compile Include="IAsyncRequestProcessor.cs" />
-    <Compile Include="IEnableResponseCachingAttribute.cs" />
-    <Compile Include="Caching\CachingInterceptor.cs" />
-    <Compile Include="Interceptors\ConventionBasedInterceptor.cs" />
-    <Compile Include="Interceptors\IRequestHandlerInterceptor.cs" />
-    <Compile Include="InversionOfControl\IContainer.cs" />
-    <Compile Include="InversionOfControl\IoC.cs" />
-    <Compile Include="InversionOfControl\Lifestyle.cs" />
-    <Compile Include="OneWayRequest.cs" />
-    <Compile Include="ProcessRequestsAsyncCompletedArgs.cs" />
-    <Compile Include="ReceivedResponses.cs" />
-    <Compile Include="RequestDispatcher.cs" />
-    <Compile Include="RequestDispatcherFactory.cs" />
-    <Compile Include="RequestDispatcherFactoryStub.cs" />
-    <Compile Include="RequestDispatcherStub.cs" />
-    <Compile Include="RequestProcessingContext.cs" />
-    <Compile Include="ResponseReceiver.cs" />
     <Compile Include="WCF\AsyncRequestProcessorProxy.cs" />
     <Compile Include="WCF\IAsyncWcfRequestProcessor.cs" />
     <Compile Include="WCF\IWcfRequestProcessor.cs" />
     <Compile Include="WCF\IWcfRestJsonRequestProcessor.cs" />
     <Compile Include="WCF\IWcfRestXmlRequestProcessor.cs" />
     <Compile Include="WCF\KnownTypeProvider.cs" />
-    <Compile Include="Request.cs" />
-    <Compile Include="IRequestProcessor.cs" />
-    <Compile Include="Response.cs" />
     <Compile Include="WCF\RequestProcessorProxy.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +109,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Agatha.Common.PCL\Agatha.Common.PCL.csproj">
+      <Project>{a65b788a-b47d-413c-b20a-fb9c0475cb85}</Project>
+      <Name>Agatha.Common.PCL</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

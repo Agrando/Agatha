@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Agatha.Common.WCF;
+//using Agatha.Common.WCF;
 
 namespace Agatha.Common
 {

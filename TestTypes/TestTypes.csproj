@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TestTypes</RootNamespace>
     <AssemblyName>TestTypes</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -41,6 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -49,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -71,9 +73,9 @@
     <Compile Include="MoreTestTypes.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agatha.Common\Agatha.Common.csproj">
-      <Project>{53EBF9A4-A518-483A-9842-5E5FBE6495F8}</Project>
-      <Name>Agatha.Common</Name>
+    <ProjectReference Include="..\Agatha.Common.PCL\Agatha.Common.PCL.csproj">
+      <Project>{a65b788a-b47d-413c-b20a-fb9c0475cb85}</Project>
+      <Name>Agatha.Common.PCL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Agatha.ServiceLayer\Agatha.ServiceLayer.csproj">
       <Project>{273AA4F7-A031-46E3-A6A3-E61E82BD2377}</Project>

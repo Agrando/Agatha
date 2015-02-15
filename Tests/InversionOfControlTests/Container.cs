@@ -42,11 +42,6 @@ namespace Agatha.Castle
 			return windsorContainer.Resolve<TComponent>();
 		}
 
-		public TComponent Resolve<TComponent>(string key)
-		{
-			return windsorContainer.Resolve<TComponent>(key);
-		}
-
 		public object Resolve(Type componentType)
 		{
 			return windsorContainer.Resolve(componentType);

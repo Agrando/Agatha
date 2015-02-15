@@ -76,101 +76,8 @@
     <Reference Include="System.Windows" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Agatha.Common\AsyncRequestDispatcher.cs">
-      <Link>AsyncRequestDispatcher.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\AsyncRequestDispatcherFactory.cs">
-      <Link>AsyncRequestDispatcherFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\AsyncRequestDispatcherFactoryStub.cs">
-      <Link>AsyncRequestDispatcherFactoryStub.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\AsyncRequestDispatcherStub.cs">
-      <Link>AsyncRequestDispatcherStub.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Caching\CacheConfiguration.cs">
-      <Link>Caching\CacheConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Caching\CacheManager.cs">
-      <Link>Caching\CacheManager.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Caching\ICache.cs">
-      <Link>Caching\ICache.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Caching\ICacheProvider.cs">
-      <Link>Caching\ICacheProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Caching\InMemoryCache.cs">
-      <Link>Caching\InMemoryCache.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Caching\InMemoryCacheProvider.cs">
-      <Link>Caching\InMemoryCacheProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Caching\RequestCacheConfiguration.cs">
-      <Link>Caching\RequestCacheConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Caching\Timers\ITimer.cs">
-      <Link>Caching\Timers\ITimer.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Caching\Timers\ITimerProvider.cs">
-      <Link>Caching\Timers\ITimerProvider.cs</Link>
-    </Compile>
     <Compile Include="..\Agatha.Common\Caching\Timers\TimerProvider.cs">
       <Link>Caching\Timers\TimerProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Disposable.cs">
-      <Link>Disposable.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\EnableClientResponseCachingAttribute.cs">
-      <Link>EnableClientResponseCachingAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\EnableServiceResponseCachingAttribute.cs">
-      <Link>EnableServiceResponseCachingAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\ExceptionInfo.cs">
-      <Link>ExceptionInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\ExceptionType.cs">
-      <Link>ExceptionType.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\IAsyncRequestProcessor.cs">
-      <Link>IAsyncRequestProcessor.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\IEnableResponseCachingAttribute.cs">
-      <Link>IEnableResponseCachingAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\InversionOfControl\IContainer.cs">
-      <Link>InversionOfControl\IContainer.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\InversionOfControl\IoC.cs">
-      <Link>InversionOfControl\IoC.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\InversionOfControl\Lifestyle.cs">
-      <Link>InversionOfControl\Lifestyle.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\IRequestProcessor.cs">
-      <Link>IRequestProcessor.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\OneWayRequest.cs">
-      <Link>OneWayRequest.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\ProcessRequestsAsyncCompletedArgs.cs">
-      <Link>ProcessRequestsAsyncCompletedArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\ReceivedResponses.cs">
-      <Link>ReceivedResponses.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Request.cs">
-      <Link>Request.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Response.cs">
-      <Link>Response.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\ResponseReceiver.cs">
-      <Link>ResponseReceiver.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\WCF\IAsyncWcfRequestProcessor.cs">
-      <Link>WCF\IAsyncWcfRequestProcessor.cs</Link>
     </Compile>
     <Compile Include="..\Agatha.Common\WCF\KnownTypeProvider.cs">
       <Link>WCF\KnownTypeProvider.cs</Link>
@@ -182,6 +89,7 @@
     <Compile Include="ClientConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WCF\AsyncRequestProcessorProxy.cs" />
+    <Compile Include="WCF\IAsyncWcfRequestProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="agatha.snk" />
@@ -203,7 +111,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Agatha.Common.PCL\Agatha.Common.PCL.csproj">
+      <Project>{a65b788a-b47d-413c-b20a-fb9c0475cb85}</Project>
+      <Name>Agatha.Common.PCL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
