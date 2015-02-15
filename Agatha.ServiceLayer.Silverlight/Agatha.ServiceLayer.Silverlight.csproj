@@ -75,9 +75,6 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Agatha.ServiceLayer\RequestHandler.cs">
-      <Link>RequestHandler.cs</Link>
-    </Compile>
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
@@ -98,6 +95,10 @@
     <ProjectReference Include="..\Agatha.Common.Silverlight\Agatha.Common.Silverlight.csproj">
       <Project>{CD6FA3BD-DA5E-4E65-89B4-DDA81F50729F}</Project>
       <Name>Agatha.Common.Silverlight</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Agatha.ServiceLayer.PCL\Agatha.ServiceLayer.PCL.csproj">
+      <Project>{4b4af4fa-5e92-4242-86d5-f0191b01a437}</Project>
+      <Name>Agatha.ServiceLayer.PCL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

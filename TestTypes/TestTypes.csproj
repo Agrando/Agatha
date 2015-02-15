@@ -77,9 +77,9 @@
       <Project>{a65b788a-b47d-413c-b20a-fb9c0475cb85}</Project>
       <Name>Agatha.Common.PCL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Agatha.ServiceLayer\Agatha.ServiceLayer.csproj">
-      <Project>{273AA4F7-A031-46E3-A6A3-E61E82BD2377}</Project>
-      <Name>Agatha.ServiceLayer</Name>
+    <ProjectReference Include="..\Agatha.ServiceLayer.PCL\Agatha.ServiceLayer.PCL.csproj">
+      <Project>{4b4af4fa-5e92-4242-86d5-f0191b01a437}</Project>
+      <Name>Agatha.ServiceLayer.PCL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
