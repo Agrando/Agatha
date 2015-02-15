@@ -2,11 +2,6 @@
 using Agatha.Common.InversionOfControl;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using Microsoft.Practices.Unity;
-using Ninject;
-using Spring.Context.Support;
-using Spring.Objects.Factory.Config;
-using Spring.Objects.Factory.Support;
 using Tests.ConfigurationTests;
 using TestTypes;
 using Xunit;
@@ -44,69 +39,6 @@ namespace Tests.InversionOfControlTests
             container.Register(Component.For<RequestB>().Named("KeyForRequestB"));
 
             return new Agatha.Castle.Container(container);
-        }
-    }
-
-    public sealed class ComponentResolvingByKeyWithUnity : ComponentResolvingByKey<Agatha.Unity.Container>
-    {
-        protected override IContainer InitializeContainer()
-        {
-            var container = new UnityContainer();
-            container.RegisterType<RequestA>("KeyForRequestA");
-            container.RegisterType<RequestB>("KeyForRequestB");
-
-            return new Agatha.Unity.Container(container);
-        }
-    }
-
-    public sealed class ComponentResolvingByKeyWithNinject : ComponentResolvingByKey<Agatha.Ninject.Container>
-    {
-        protected override IContainer InitializeContainer()
-        {
-            var kernel = new StandardKernel();
-            kernel.Bind<RequestA>().ToSelf().Named("KeyForRequestA");
-            kernel.Bind<RequestB>().ToSelf().Named("KeyForRequestB");
-
-            return new Agatha.Ninject.Container(kernel);
-        }
-    }
-
-    public sealed class ComponentResolvingByKeyWithStructureMap : ComponentResolvingByKey<Agatha.StructureMap.Container>
-    {
-        protected override IContainer InitializeContainer()
-        {
-            var container = new StructureMap.Container();
-            container.Configure(x => x.ForConcreteType<RequestA>().Configure.Named("KeyForRequestA"));
-            container.Configure(x => x.ForConcreteType<RequestB>().Configure.Named("KeyForRequestB"));
-
-            return new Agatha.StructureMap.Container(container);
-        }
-    }
-
-    public sealed class ComponentResolvingByKeyWithSpring : ComponentResolvingByKey<Agatha.Spring.Container>
-    {
-        private GenericApplicationContext context;
-
-        protected override IContainer InitializeContainer()
-        {
-            this.context = new GenericApplicationContext();
-            RegisterByKey(typeof(RequestA), typeof(RequestA), "KeyForRequestA");
-            RegisterByKey(typeof(RequestB), typeof(RequestB), "KeyForRequestB");
-
-            return new Agatha.Spring.Container(context);
-        }
-
-        public void RegisterByKey(Type componentType, Type implementationType, String instanceKey)
-        {
-            if (this.context == null)
-            {
-                throw new InvalidOperationException("GenericApplicationContext is not initialized.");
-            }
-
-            var factory = new DefaultObjectDefinitionFactory();
-            var builder = ObjectDefinitionBuilder.RootObjectDefinition(factory, implementationType);
-            builder.SetAutowireMode(AutoWiringMode.AutoDetect);
-            this.context.RegisterObjectDefinition(instanceKey, builder.ObjectDefinition);
         }
     }
 }

@@ -7,7 +7,11 @@
 */*.user
 */*/*.user
 *.xap
+
+#NuGet
 packages
+!packages/repositories.config
+
 Backup
 .vs
 
