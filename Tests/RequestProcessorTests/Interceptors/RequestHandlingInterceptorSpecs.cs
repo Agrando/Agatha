@@ -26,7 +26,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         {
             using (var requestProcessor = IoC.Container.Resolve<IRequestProcessor>())
             {
-                response = requestProcessor.Process(request).SingleOrDefault();
+                response = requestProcessor.Process(request).Result.SingleOrDefault();
             }
         }
 
@@ -82,7 +82,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         {
             using (var processor = IoC.Container.Resolve<IRequestProcessor>())
             {
-                response = processor.Process(request).Single();
+                response = processor.Process(request).Result.Single();
             }
         }
 
@@ -126,7 +126,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         {
             using (var requestProcessor = IoC.Container.Resolve<IRequestProcessor>())
             {
-                requestProcessor.Process(request).SingleOrDefault();
+                requestProcessor.Process(request).Result.SingleOrDefault();
             }
         }
 
@@ -167,7 +167,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         {
             using (var processor = IoC.Container.Resolve<IRequestProcessor>())
             {
-                responses = processor.Process(new[] { erroneousRequest, subsequentRequest, anotherSubsequentRequest });
+                responses = processor.Process(new[] { erroneousRequest, subsequentRequest, anotherSubsequentRequest }).Result;
             }
         }
 
@@ -227,7 +227,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         {
             using (var requestProcessor = IoC.Container.Resolve<IRequestProcessor>())
             {
-                response = requestProcessor.Process(request).SingleOrDefault();
+                response = requestProcessor.Process(request).Result.SingleOrDefault();
             }
         }
 
@@ -280,7 +280,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         {
             using (var requestProcessor = IoC.Container.Resolve<IRequestProcessor>())
             {
-                response = requestProcessor.Process(request).SingleOrDefault();
+                response = requestProcessor.Process(request).Result.SingleOrDefault();
             }
         }
 
@@ -323,7 +323,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         {
             using (var requestProcessor = IoC.Container.Resolve<IRequestProcessor>())
             {
-                requestProcessor.ProcessOneWayRequests(request);
+                requestProcessor.ProcessOneWayRequests(request).Wait();
             }
         }
 

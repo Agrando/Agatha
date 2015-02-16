@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Threading;
 using Agatha.Common;
+using System.Threading.Tasks;
 
 namespace Agatha.ServiceLayer
 {
@@ -9,8 +10,8 @@ namespace Agatha.ServiceLayer
 	{
 		private readonly IRequestProcessor requestProcessor;
 
-		private readonly Func<Request[], Response[]> processFunc;
-		private readonly Action<OneWayRequest[]> processOneWayRequestsAction;
+		private readonly Func<Request[], Task<Response[]>> processFunc;
+		private readonly Func<OneWayRequest[],Task> processOneWayRequestsAction;
 
 		public AsyncRequestProcessor(IRequestProcessor requestProcessor)
 		{
@@ -31,7 +32,7 @@ namespace Agatha.ServiceLayer
 
 		public Response[] EndProcessRequests(IAsyncResult result)
 		{
-			return processFunc.EndInvoke(result);
+			return processFunc.EndInvoke(result).Result;
 		}
 
 		public void ProcessRequestsAsync(Request[] requests, Action<ProcessRequestsAsyncCompletedArgs> callback)

@@ -1,5 +1,6 @@
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using System.Threading.Tasks;
 
 namespace Agatha.Common.WCF
 {
@@ -10,17 +11,17 @@ namespace Agatha.Common.WCF
         [ServiceKnownType("GetKnownTypes", typeof(KnownTypeProvider))]
         [TransactionFlow(TransactionFlowOption.Allowed)]
         [WebGet(UriTemplate = "/", BodyStyle = WebMessageBodyStyle.WrappedResponse, ResponseFormat = WebMessageFormat.Json)]
-        Response[] Process();
+        Task<Response[]> Process();
 
         [OperationContract(Name = "ProcessJsonRequestsPost")]
         [ServiceKnownType("GetKnownTypes", typeof(KnownTypeProvider))]
         [TransactionFlow(TransactionFlowOption.Allowed)]
         [WebInvoke(UriTemplate = "/post", BodyStyle = WebMessageBodyStyle.Wrapped, ResponseFormat = WebMessageFormat.Json)]
-        Response[] Process(Request[] requests);
+        Task<Response[]> Process(Request[] requests);
 
         [OperationContract(Name = "ProcessOneWayJsonRequestsPost", IsOneWay = true)]
         [ServiceKnownType("GetKnownTypes", typeof(KnownTypeProvider))]
         [WebInvoke(UriTemplate = "/post/oneway", BodyStyle = WebMessageBodyStyle.Wrapped, ResponseFormat = WebMessageFormat.Json)]
-        void ProcessOneWayRequests(OneWayRequest[] requests);
+        Task ProcessOneWayRequests(OneWayRequest[] requests);
     }
 }

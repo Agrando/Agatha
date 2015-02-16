@@ -1,5 +1,6 @@
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using System.Threading.Tasks;
 
 namespace Agatha.Common.WCF
 {
@@ -10,11 +11,11 @@ namespace Agatha.Common.WCF
         [ServiceKnownType("GetKnownTypes", typeof(KnownTypeProvider))]
         [TransactionFlow(TransactionFlowOption.Allowed)]
         [WebGet(UriTemplate="/", ResponseFormat = WebMessageFormat.Xml)]
-        Response[] Process();
+        Task<Response[]> Process();
 
         [OperationContract(Name = "ProcessOneWayXmlRequests", IsOneWay = true)]
         [ServiceKnownType("GetKnownTypes", typeof(KnownTypeProvider))]
         [WebGet(UriTemplate="/oneway", ResponseFormat = WebMessageFormat.Xml)]
-        void ProcessOneWayRequests();
+        Task ProcessOneWayRequests();
     }
 }

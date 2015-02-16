@@ -4,6 +4,7 @@ using System.Linq;
 using Agatha.Common;
 using Agatha.Common.InversionOfControl;
 using Common.Logging;
+using System.Threading.Tasks;
 
 namespace Agatha.ServiceLayer
 {
@@ -36,76 +37,79 @@ namespace Agatha.ServiceLayer
 
         protected virtual void BeforeResolvingRequestHandler(Request request) { }
 
-        public Response[] Process(params Request[] requests)
+        public Task<Response[]> Process(params Request[] requests)
         {
-            if (requests == null) return null;
+			return Task<Response[]>.Factory.StartNew(() =>
+			{
+				if (requests == null) return null;
 
-            var exceptionsPreviouslyOccurred = false;
+				var exceptionsPreviouslyOccurred = false;
 
-            BeforeProcessing(requests);
+				BeforeProcessing(requests);
 
-            var processingContexts = requests.Select(request => new RequestProcessingContext(request)).ToList();
+				var processingContexts = requests.Select(request => new RequestProcessingContext(request)).ToList();
 
-            foreach (var requestProcessingState in processingContexts)
-            {
-                if (exceptionsPreviouslyOccurred)
-                {
-                    errorHandler.DealWithPreviouslyOccurredExceptions(requestProcessingState);
-                    continue;
-                }
+				foreach (var requestProcessingState in processingContexts)
+				{
+					if (exceptionsPreviouslyOccurred)
+					{
+						errorHandler.DealWithPreviouslyOccurredExceptions(requestProcessingState);
+						continue;
+					}
 
-                IList<IRequestHandlerInterceptor> interceptors = new List<IRequestHandlerInterceptor>();
-                IList<IRequestHandlerInterceptor> invokedInterceptors = new List<IRequestHandlerInterceptor>();
-                
-                try
-                {
-                    interceptors = ResolveInterceptors();
-                    foreach (var interceptor in interceptors)
-                    {
-                        interceptor.BeforeHandlingRequest(requestProcessingState);
-                        invokedInterceptors.Add(interceptor);
-                        if (requestProcessingState.IsProcessed) break;
-                    }
+					IList<IRequestHandlerInterceptor> interceptors = new List<IRequestHandlerInterceptor>();
+					IList<IRequestHandlerInterceptor> invokedInterceptors = new List<IRequestHandlerInterceptor>();
 
-                    if (!requestProcessingState.IsProcessed)
-                    {
-                        InvokeRequestHandler(requestProcessingState);
-                    }
-                }
-                catch (Exception exc)
-                {
-                    logger.Error(exc.Message, exc);
-                    exceptionsPreviouslyOccurred = true;
-                    errorHandler.DealWithException(requestProcessingState, exc);
-                }
-                finally
-                {
-                    try
-                    {
-                        var possibleExceptionsFromInterceptors = RunInvokedInterceptorsSafely(requestProcessingState, invokedInterceptors);
+					try
+					{
+						interceptors = ResolveInterceptors();
+						foreach (var interceptor in interceptors)
+						{
+							interceptor.BeforeHandlingRequest(requestProcessingState);
+							invokedInterceptors.Add(interceptor);
+							if (requestProcessingState.IsProcessed) break;
+						}
 
-                        if (possibleExceptionsFromInterceptors.Any())
-                        {
-                            foreach (var exceptionFromInterceptor in possibleExceptionsFromInterceptors)
-                            {
-                                logger.Error(exceptionFromInterceptor);
-                            }
-                            exceptionsPreviouslyOccurred = true;
-                            errorHandler.DealWithException(requestProcessingState, possibleExceptionsFromInterceptors.ElementAt(0));
-                        }
-                    }
-                    finally
-                    {
-                        DisposeInterceptorsSafely(interceptors);
-                    }
-                }
-            }
-            
-            var responses = processingContexts.Select(c => c.Response).ToArray();
+						if (!requestProcessingState.IsProcessed)
+						{
+							InvokeRequestHandler(requestProcessingState);
+						}
+					}
+					catch (Exception exc)
+					{
+						logger.Error(exc.Message, exc);
+						exceptionsPreviouslyOccurred = true;
+						errorHandler.DealWithException(requestProcessingState, exc);
+					}
+					finally
+					{
+						try
+						{
+							var possibleExceptionsFromInterceptors = RunInvokedInterceptorsSafely(requestProcessingState, invokedInterceptors);
 
-            AfterProcessing(requests, responses);
+							if (possibleExceptionsFromInterceptors.Any())
+							{
+								foreach (var exceptionFromInterceptor in possibleExceptionsFromInterceptors)
+								{
+									logger.Error(exceptionFromInterceptor);
+								}
+								exceptionsPreviouslyOccurred = true;
+								errorHandler.DealWithException(requestProcessingState, possibleExceptionsFromInterceptors.ElementAt(0));
+							}
+						}
+						finally
+						{
+							DisposeInterceptorsSafely(interceptors);
+						}
+					}
+				}
 
-            return responses;
+				var responses = processingContexts.Select(c => c.Response).ToArray();
+
+				AfterProcessing(requests, responses);
+
+				return responses;
+			});
         }
 
         private void InvokeRequestHandler(RequestProcessingContext requestProcessingState)
@@ -221,9 +225,9 @@ namespace Agatha.ServiceLayer
         {
         }
 
-        public void ProcessOneWayRequests(params OneWayRequest[] requests)
+        public Task ProcessOneWayRequests(params OneWayRequest[] requests)
         {
-            Process(requests);
+            return Process(requests);
         }
 
         private static Type GetOneWayRequestHandlerTypeFor(Request request)

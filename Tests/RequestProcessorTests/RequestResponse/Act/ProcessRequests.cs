@@ -7,6 +7,7 @@ using Castle.Core.Internal;
 using QuickDotNetCheck;
 using QuickGenerate;
 using Tests.RequestProcessorTests.RequestResponse.Act.Helpers;
+using System.Threading.Tasks;
 
 namespace Tests.RequestProcessorTests.RequestResponse.Act
 {
@@ -41,7 +42,7 @@ namespace Tests.RequestProcessorTests.RequestResponse.Act
             ProcessRequestsState.CacheManager.Clear();
             ProcessRequestsState.CacheManager.ExceptionsThrown = ProcessRequestsState.ExceptionsThrown;
             input.ForEach(el => ProcessRequestsState.StubHandler(el.Item1.GetType(), el.Item2.Action));
-            output = ProcessRequestsState.RequestProcessor.Process(input.ToList().ConvertAll(src => src.Item1).ToArray());
+            output = ProcessRequestsState.RequestProcessor.Process(input.ToList().ConvertAll(src => src.Item1).ToArray()).Result;
         }
 
         public override string ToString()

@@ -78,7 +78,7 @@ namespace Tests.RequestProcessorTests.OneWay
                 input.OneWayRequestsAndHandlers[key].StubIt(input.Actions[ix], exceptionsThrown);
                 ix++;
             }
-            OneWayRequestSuite.requestProcessor.ProcessOneWayRequests(input.Requests);
+            OneWayRequestSuite.requestProcessor.ProcessOneWayRequests(input.Requests).Wait();
         }
 
         public Spec ProcessRequestsWithoutException()

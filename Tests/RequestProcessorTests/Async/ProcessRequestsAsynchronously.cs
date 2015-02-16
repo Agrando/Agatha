@@ -6,6 +6,7 @@ using QuickDotNetCheck;
 using QuickGenerate;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
+using System.Threading.Tasks;
 
 namespace Tests.RequestProcessorTests.Async
 {
@@ -54,13 +55,13 @@ namespace Tests.RequestProcessorTests.Async
 
                                    inputpair => requestProcessor.Stub<IRequestProcessor>(
                                        r => r.Process(inputpair.Item1))
-                                                    .Return(inputpair.Item2)
+                                                    .Return(Task.Run(() => inputpair.Item2))
                                                     .Repeat.Once()
                                                     .WhenCalled(arg => lastProcessRequestsThrewException = false),
 
                                    inputpair => requestProcessor.Stub<IRequestProcessor>(
                                        r => r.Process(inputpair.Item1))
-                                                    .Return(inputpair.Item2)
+                                                    .Return(Task.Run(() => inputpair.Item2))
                                                     .Repeat.Once()
                                                     .WhenCalled(arg =>
                                                                     {

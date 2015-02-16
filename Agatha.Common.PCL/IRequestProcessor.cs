@@ -1,10 +1,11 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Agatha.Common
 {
 	public interface IRequestProcessor : IDisposable
 	{
-		Response[] Process(params Request[] requests);
-		void ProcessOneWayRequests(params OneWayRequest[] requests);
+		Task<Response[]> Process(params Request[] requests);
+		Task ProcessOneWayRequests(params OneWayRequest[] requests);
 	}
 }

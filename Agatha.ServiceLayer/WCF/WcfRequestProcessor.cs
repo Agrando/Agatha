@@ -1,13 +1,11 @@
-using System.ServiceModel;
-using System.ServiceModel.Activation;
 using Agatha.Common;
 using Agatha.Common.InversionOfControl;
 using Agatha.Common.WCF;
-using System.ServiceModel.Web;
-using System.Collections.Specialized;
-using System.Linq;
-using System;
 using Agatha.ServiceLayer.WCF.Rest;
+using System.ServiceModel;
+using System.ServiceModel.Activation;
+using System.ServiceModel.Web;
+using System.Threading.Tasks;
 
 namespace Agatha.ServiceLayer.WCF
 {
@@ -18,33 +16,13 @@ namespace Agatha.ServiceLayer.WCF
 	public class WcfRequestProcessor : IWcfRequestProcessor, IWcfRestJsonRequestProcessor, IWcfRestXmlRequestProcessor
 	{
 		[TransactionFlow(TransactionFlowOption.Allowed)]
-		public Response[] Process(params Request[] requests)
-		{
-			using (var processor = IoC.Container.Resolve<IRequestProcessor>())
-			{
-				Response[] responses;
-
-				try
-				{
-					responses = processor.Process(requests);
-				}
-				finally
-				{
-					// IRequestProcessor is a transient component so we must release it
-					IoC.Container.Release(processor);
-				}
-                
-				return responses;
-			}
-		}
-
-		public void ProcessOneWayRequests(params OneWayRequest[] requests)
+		public Task<Response[]> Process(params Request[] requests)
 		{
 			using (var processor = IoC.Container.Resolve<IRequestProcessor>())
 			{
 				try
 				{
-					processor.ProcessOneWayRequests(requests);
+					return processor.Process(requests);
 				}
 				finally
 				{
@@ -54,7 +32,23 @@ namespace Agatha.ServiceLayer.WCF
 			}
 		}
 
-        public Response[] Process()
+		public Task ProcessOneWayRequests(params OneWayRequest[] requests)
+		{
+			using (var processor = IoC.Container.Resolve<IRequestProcessor>())
+			{
+				try
+				{
+					return processor.ProcessOneWayRequests(requests);
+				}
+				finally
+				{
+					// IRequestProcessor is a transient component so we must release it
+					IoC.Container.Release(processor);
+				}
+			}
+		}
+
+        public Task<Response[]> Process()
         {
             var collection = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.QueryParameters;
 
@@ -65,7 +59,7 @@ namespace Agatha.ServiceLayer.WCF
             return Process(requests);
         }
 
-        public void ProcessOneWayRequests()
+        public Task ProcessOneWayRequests()
         {
             var collection = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.QueryParameters;
 
@@ -73,7 +67,7 @@ namespace Agatha.ServiceLayer.WCF
 
             var requests = builder.GetOneWayRequests(collection);
 
-            ProcessOneWayRequests(requests);
+            return ProcessOneWayRequests(requests);
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Agatha.Common;
 using Agatha.Common.InversionOfControl;
+using System.Threading.Tasks;
 
 namespace Agatha.ServiceLayer
 {
@@ -27,44 +28,47 @@ namespace Agatha.ServiceLayer
 
 		protected virtual void AfterHandle(Request request) { }
 
-		public Response[] Process(params Request[] requests)
+		public Task<Response[]> Process(params Request[] requests)
 		{
-			if (requests == null) return null;
-
-			var responses = new List<Response>(requests.Length);
-
-			bool exceptionsPreviouslyOccurred = false;
-
-			BeforeProcessing(requests);
-
-			foreach (var request in requests)
+			return Task<Response[]>.Factory.StartNew(() =>
 			{
-				using (var handler = (IRequestHandler)IoC.Container.Resolve(GetRequestHandlerTypeFor(request)))
+				if (requests == null) return null;
+
+				var responses = new List<Response>(requests.Length);
+
+				bool exceptionsPreviouslyOccurred = false;
+
+				BeforeProcessing(requests);
+
+				foreach (var request in requests)
 				{
-					try
+					using (var handler = (IRequestHandler)IoC.Container.Resolve(GetRequestHandlerTypeFor(request)))
 					{
-						if (!exceptionsPreviouslyOccurred)
+						try
 						{
-							var response = GetResponseFromHandler(request, handler);
-							exceptionsPreviouslyOccurred = response.ExceptionType != ExceptionType.None;
-							responses.Add(response);
+							if (!exceptionsPreviouslyOccurred)
+							{
+								var response = GetResponseFromHandler(request, handler);
+								exceptionsPreviouslyOccurred = response.ExceptionType != ExceptionType.None;
+								responses.Add(response);
+							}
+							else
+							{
+								var response = handler.CreateDefaultResponse();
+								responses.Add(SetStandardExceptionInfoWhenEarlierRequestsFailed(response));
+							}
 						}
-						else
+						finally
 						{
-							var response = handler.CreateDefaultResponse();
-							responses.Add(SetStandardExceptionInfoWhenEarlierRequestsFailed(response));
+							IoC.Container.Release(handler);
 						}
-					}
-					finally
-					{
-						IoC.Container.Release(handler);
 					}
 				}
-			}
 
-			AfterProcessing(requests, responses);
+				AfterProcessing(requests, responses);
 
-			return responses.ToArray();
+				return responses.ToArray();
+			});
 		}
 
 		private Response SetStandardExceptionInfoWhenEarlierRequestsFailed(Response response)
@@ -122,15 +126,18 @@ namespace Agatha.ServiceLayer
 			response.ExceptionType = ExceptionType.Unknown;
 		}
 
-		public void ProcessOneWayRequests(params OneWayRequest[] requests)
+		public Task ProcessOneWayRequests(params OneWayRequest[] requests)
 		{
-			if (requests == null) return;
+			return Task.Factory.StartNew(() =>
+			{
+				if (requests == null) return;
 
-			BeforeProcessing(requests);
+				BeforeProcessing(requests);
 
-			DispatchRequestsToHandlers(requests);
+				DispatchRequestsToHandlers(requests);
 
-			AfterProcessing(requests, null);
+				AfterProcessing(requests, null);
+			});
 		}
 
 		private void DispatchRequestsToHandlers(OneWayRequest[] requests)

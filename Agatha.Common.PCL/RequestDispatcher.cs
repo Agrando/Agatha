@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Agatha.Common.Caching;
+using System.Threading.Tasks;
 
 namespace Agatha.Common
 {
@@ -160,7 +161,7 @@ namespace Agatha.Common
 			if (requestProcessor != null) requestProcessor.Dispose();
 		}
 
-		protected virtual Response[] GetResponses(params Request[] requestsToProcess)
+		protected virtual async Task<Response[]> GetResponses(params Request[] requestsToProcess)
 		{
 			BeforeSendingRequests(requestsToProcess);
 
@@ -172,7 +173,7 @@ namespace Agatha.Common
 
 			if (requestsToSend.Count > 0)
 			{
-				var receivedResponses = requestProcessor.Process(requestsToSendAsArray);
+				Response[] receivedResponses = await requestProcessor.Process(requestsToSendAsArray);
 				AddCacheableResponsesToCache(receivedResponses, requestsToSendAsArray);
 				PutReceivedResponsesInTempResponseArray(tempResponseArray, receivedResponses);
 			}
@@ -229,11 +230,11 @@ namespace Agatha.Common
 		protected virtual void AfterSendingRequests(IEnumerable<Request> sentRequests) {}
 		protected virtual void BeforeReturningResponses(IEnumerable<Response> receivedResponses) {}
 
-		private void SendRequestsIfNecessary()
+		private async void SendRequestsIfNecessary()
 		{
 			if (!RequestsSent())
 			{
-				responses = GetResponses(requests.ToArray());
+				responses = await GetResponses(requests.ToArray());
 				DealWithPossibleExceptions(responses);
 			}
 		}
