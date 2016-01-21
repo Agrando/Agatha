@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="agatha.snk" />
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Agatha.Common.PCL\Agatha.Common.PCL.csproj">
